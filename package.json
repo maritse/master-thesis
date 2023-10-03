@@ -1,0 +1,19 @@
+{
+  "name": "master-thesis",
+  "version": "1.0.0",
+  "description": "The repository contains a prototype implementation of the solution that I discuss in my master's thesis.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maritse/master-thesis.git"
+  },
+  "author": "maritse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maritse/master-thesis/issues"
+  },
+  "homepage": "https://github.com/maritse/master-thesis#readme"
+}
