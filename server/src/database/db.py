@@ -1,9 +1,19 @@
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 
 class MongoDBHandler:
-    def __init__(self, database_url, database_name):
+    def __init__(self, database_url, port, database_name):
         self.client = MongoClient(database_url)
         self.database = self.client[database_name]
+        self.port = port
+
+    def check_connection(self, timeout=3):
+        try:
+            client = MongoClient(self.database_url, self.port, serverSelectionTimeoutMS=timeout)
+            client.close()
+            return True
+        except ConnectionFailure:
+            return False
 
     def insert_document(self, collection_name, document):
         collection = self.database[collection_name]
