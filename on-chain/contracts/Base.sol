@@ -12,6 +12,12 @@ abstract contract Base {
         WaitingForTermination,
         WaitingForBackpropagation
     }
+
+    struct ModelDetails {
+        uint ID;
+        RoundPhase status;
+        
+    }
     // fazy rundy draft
     /*
     enum RoundPhase {
@@ -32,9 +38,11 @@ abstract contract Base {
     }
 
     address public owner;
-    address public model;
 
     RoundPhase BeforeStart;
+
+    address[] public model;
+    //mapping(uint => )
 
     // TODO - decide if we want to support multiple aggregators
     // for now, the only aggregators is the owner of the contract
