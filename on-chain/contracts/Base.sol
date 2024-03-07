@@ -1,33 +1,27 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
-
+pragma solidity 0.8.21;
 
 abstract contract Base {
-    
-    // fazy rundy
+
     enum RoundPhase {
-        Stopped,
-        WaitingForUpdates,
+        BeforeStart,
+        WaitingForClientsRegistration,
+        Training,
         WaitingForScores,
         WaitingForTermination,
-        WaitingForBackpropagation
+        Termination
     }
-
+    
     struct ModelDetails {
         uint ID;
         RoundPhase status;
-        
+        address[] enteredClients;
+        uint numberOfRounds;
+        uint currentRoundNumber;
     }
-    // fazy rundy draft
-    /*
-    enum RoundPhase {
-        BeforeStart,
-        WaitingForClientsRegistration.
-        WaitingForScores,
-        WaitingForTermination,
-        TODO
-    }
-    */
+
+    ModelDetails[] modelsList;
+    ModelDetails[] modelsListReadyToRegister;
 
     modifier onlyOwner() {
     require(
@@ -39,26 +33,11 @@ abstract contract Base {
 
     address public owner;
 
-    RoundPhase BeforeStart;
-
-    address[] public model;
-    //mapping(uint => )
-
-    // TODO - decide if we want to support multiple aggregators
-    // for now, the only aggregators is the owner of the contract
     address[] public aggregators;
     mapping(address => bool) public registeredAggregators;
 
-    // clients
     address[] public clients;
     mapping(address => bool) public registeredClients;
-
-    // Round details
-    uint public round = 0;
-    RoundPhase public roundPhase = RoundPhase.Stopped;
-    mapping(uint => address[]) public selectedClients;
-
-    // Aggregations details - TODO decide if we want to support multiple aggregators
 
     constructor() {
         owner = msg.sender;
@@ -76,12 +55,28 @@ abstract contract Base {
         return clients;
     }
 
-    // TODO if needed - aggregator leak
-    function returnAggregator() public view returns (address[] memory) {
+    function getClientsByProject(uint ID) onlyOwner public view returns (address[] memory) {
+        // TODO
+    }
+
+    function getAggregator() public view returns (address[] memory) {
         return aggregators;
     }
 
-    function setNewModel() onlyOwner public {
+    function registerNewModel(uint ID, uint roundsNumber) onlyOwner public {
+        address[] memory _x;
+        modelsList.push(ModelDetails({
+            ID: ID,
+            status: RoundPhase.BeforeStart,
+            enteredClients: _x,
+            numberOfRounds: roundsNumber
+        }));
+    }
+    function deleteModel(uint ID) onlyOwner public {
+        // TODO
+    }
 
+    function activateClientRegistrationModel(uint ID) onlyOwner public {
+        // TODO - czy potrzebne?
     }
 }
