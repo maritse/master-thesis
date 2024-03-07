@@ -11,6 +11,4 @@ contract TrainingProcess is Base {
     function startRound(address[] memory trainersForRound) onlyOwner public {
         // TODO
     }
-
-
 }

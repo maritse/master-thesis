@@ -69,7 +69,8 @@ abstract contract Base {
             ID: ID,
             status: RoundPhase.BeforeStart,
             enteredClients: _x,
-            numberOfRounds: roundsNumber
+            numberOfRounds: roundsNumber,
+            currentRoundNumber: 0
         }));
     }
     function deleteModel(uint ID) onlyOwner public {
