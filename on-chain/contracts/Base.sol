@@ -16,6 +16,7 @@ abstract contract Base {
         uint ID;
         RoundPhase status;
         address[] enteredClients;
+        uint maxNumberOfClients;
         uint numberOfRounds;
         uint currentRoundNumber;
     }
@@ -51,6 +52,10 @@ abstract contract Base {
         }
     }
 
+    function registerClientToModel(uint ID) public {
+        // TODO
+    }
+
     function getClients() onlyOwner public view returns (address[] memory) {
         return clients;
     }
@@ -63,13 +68,14 @@ abstract contract Base {
         return aggregators;
     }
 
-    function registerNewModel(uint ID, uint roundsNumber) onlyOwner public {
+    function registerNewModel(uint ID, uint _roundsNumber, uint _maxNumberOfClients) onlyOwner public {
         address[] memory _x;
         modelsList.push(ModelDetails({
             ID: ID,
             status: RoundPhase.BeforeStart,
             enteredClients: _x,
-            numberOfRounds: roundsNumber,
+            numberOfRounds: _roundsNumber,
+            maxNumberOfClients: _maxNumberOfClients,
             currentRoundNumber: 0
         }));
     }
