@@ -1,5 +1,7 @@
 import json
 from web3 import Web3
+import asyncio
+
 
 class EthereumHandler:
     def __init__(self, provider_url):
@@ -34,6 +36,8 @@ class EthereumHandler:
         signed_transaction = self.web3.eth.account.sign_transaction(transaction, private_key)
         transaction_hash = self.web3.eth.send_raw_transaction(signed_transaction.raw_transaction)
         return transaction_hash.hex()
+
+    
 
 
 

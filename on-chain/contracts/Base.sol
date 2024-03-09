@@ -21,6 +21,9 @@ abstract contract Base {
         uint currentRoundNumber;
     }
 
+    // Events
+    event registerClient();
+
     ModelDetails[] modelsList;
     ModelDetails[] modelsListReadyToRegister;
 
@@ -49,6 +52,7 @@ abstract contract Base {
         if (registeredClients[msg.sender] == false) {
             clients.push(msg.sender);
             registeredClients[msg.sender] = true;
+            emit registerClient();
         }
     }
 
