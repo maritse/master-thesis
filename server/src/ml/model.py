@@ -19,6 +19,8 @@ from tensorflow.keras.optimizers import SGD
 from tensorflow.keras import backend as K
 import tensorflowjs as tfjs
 
+from model_mnist import MNISTHandler
+
 
 class SimpleMLP:
     def __init__(self, id, default_path = "/tmp/federated/", number_of_rounds=10):
@@ -26,7 +28,7 @@ class SimpleMLP:
         self.id = id
         self.number_of_rounds = number_of_rounds
 
-        self.loss_function = "caterogical_crossentropy"
+        self.loss_function = "categorical_crossentropy"
         self.learning_rate = 0.01
         self.weight_decay = 0.01 / number_of_rounds
         self.momentum = 0.09
@@ -47,13 +49,12 @@ class SimpleMLP:
         model.add(Activation("softmax"))
         
         # czy to dawać? czy dopiero po 1 rundzie
-        """
+
         model.compile(
             loss = self.loss_function,
             optimizer = self.optimizer,
             metrics = self.metrics
         )
-        """
 
         self.model = model
         self.global_initial_weights = self.get_model_weights()
@@ -83,8 +84,17 @@ class SimpleMLP:
 
 def func_test():
     new_model = SimpleMLP(id = 124, number_of_rounds = 10)
+
+    new_data = MNISTHandler()
+    new_data.download_mnist()
+    new_data.prepare_data_for_training()
+
     new_model.build(784, 10)
-    ide = new_model.save_current_model_state_tfjs_form()
-    print(ide)
+    #print(new_model.get_model_weights())
+    new_model.model.fit(
+        new_data.dataset_flattened["train_images"],
+        new_data.dataset_flattened["train_labels"]
+    )
+    print(new_model.get_model_weights())
 
 func_test()

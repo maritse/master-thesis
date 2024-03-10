@@ -45,3 +45,12 @@ class MNISTHandler():
         for n, d in enumerate(splitted_data):
             self.save_part_data(d, "/tmp/federated_data_" + str(n) + ".d")
         
+    def prepare_data_for_training(self):
+        self.dataset_flattened = self.dataset
+
+        x_train = self.dataset["train_images"] / 255
+        x_test = self.dataset["test_images"] / 255
+
+
+        self.dataset_flattened["train_images"] = x_train.reshape(len(x_train), 28*28)
+        self.dataset_flattened["test_images"] = x_test.reshape(len(x_test), 28*28)
