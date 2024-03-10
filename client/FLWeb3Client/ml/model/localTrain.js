@@ -66,3 +66,6 @@ async function lostFunction(model, features, labels) {
 
     return ${evalResult[1].dataSync()[0]}
 }
+
+const model = await tf.loadLayersModel("file:///tmp/federated/124/model.json")
+console.log(model)
