@@ -38,9 +38,9 @@ class SimpleMLP:
     def build(self, shape, classes):
         model = Sequential([ 
             Flatten(input_shape=(28, 28)), 
-            Dense(256, activation='sigmoid'),   
-            Dense(128, activation='sigmoid'),  
-            Dense(10, activation='sigmoid'),   
+            Dense(256, activation='relu'),   
+            Dense(128, activation='softmax'),  
+            Dense(10, activation='relu'),   
         ])
         
         # czy to dawać? czy dopiero po 1 rundzie
@@ -77,6 +77,10 @@ class SimpleMLP:
     def test_global_model(self):
         pass
 
+
+def batch_data(data, number=5):
+    pass
+
 def func_test():
     new_model = SimpleMLP(id = 124, number_of_rounds = 10)
 
@@ -88,7 +92,26 @@ def func_test():
     #print(new_model.get_model_weights())
     new_model.model.fit(
         new_data.dataset_flattened["train_images"],
-        new_data.dataset_flattened["train_labels"]
+        new_data.dataset_flattened["train_labels"],
+        epochs=1
     )
+    if np.array_equal(new_model.global_initial_weights, new_model.get_model_weights()):
+        print("są takie same")
+    else:
+        print("nie są takie same")
+#func_test()
 
-func_test()
+new_model = SimpleMLP(id = 124, number_of_rounds = 10)
+
+new_data = MNISTHandler()
+new_data.download_mnist()
+new_data.prepare_data_for_training()
+new_data.split_train_dataset(4)
+
+new_model.build(784, 1)
+new_model.model.fit(
+    new_data.datasets_train_splitted[0]["train_images"],
+    new_data.datasets_train_splitted[0]["train_labels"],
+    epochs=1
+)
+

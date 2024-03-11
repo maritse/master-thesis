@@ -40,6 +40,15 @@ class MNISTHandler():
             self.datasets_splitted.append(d)
         return self.datasets_splitted
 
+    def split_train_dataset(self, number_of_parts):
+        self.datasets_train_splitted = []
+        split_data_length = len(self.dataset["train_images"]) // number_of_parts
+        for one in range(number_of_parts):
+            d = dict()
+            d["train_images"] = self.dataset["train_images"][one * split_data_length: (one + 1) * split_data_length]
+            d["train_labels"] = self.dataset["train_labels"][one * split_data_length: (one + 1) * split_data_length]
+            self.datasets_train_splitted.append(d)
+
     def save_splitted_data(self, number_of_parts):
         splitted_data = self.split_dataset(number_of_parts)
         for n, d in enumerate(splitted_data):
