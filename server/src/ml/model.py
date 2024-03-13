@@ -114,4 +114,6 @@ new_model.model.fit(
     new_data.datasets_train_splitted[0]["train_labels"],
     epochs=1
 )
+new_model.save_current_model_state_tfjs_form()
+
 

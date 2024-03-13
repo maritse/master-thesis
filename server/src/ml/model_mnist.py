@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import sys
 import pickle
+import json
 
 class MNISTHandler():
     def __init__(self):
@@ -23,6 +24,10 @@ class MNISTHandler():
     def save_part_data(self, dataset, name):
         with open(name, "wb") as file:
             pickle.dump(dataset, file)
+
+    def save_part_data_json(self, dataset, filename):
+        with open(filename, "wb") as file:
+            json.dump(dataset, file) # bug - TODO
 
     def load_data(self, name = "/tmp/mnist.data"):
         with open(name, "rb") as file:
@@ -53,6 +58,11 @@ class MNISTHandler():
         splitted_data = self.split_dataset(number_of_parts)
         for n, d in enumerate(splitted_data):
             self.save_part_data(d, "/tmp/federated_data_" + str(n) + ".d")
+
+    def save_splitted_data_json(self, number_of_parts):
+        splitted_data = self.split_dataset(number_of_parts)
+        for n, d in enumerate(splitted_data):
+            self.save_part_data_json(d, "/tmp/federated_data_json_" + str(n) + ".json")
         
     def prepare_data_for_training(self):
         self.dataset_flattened = self.dataset
@@ -64,3 +74,7 @@ class MNISTHandler():
 
         self.dataset_flattened["train_images"] /= gray_scale
         self.dataset_flattened["test_images"] /= gray_scale
+
+new_data = MNISTHandler()
+new_data.download_mnist()
+new_data.save_splitted_data_json(4)
