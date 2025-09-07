@@ -29,10 +29,7 @@ class CustomFedAvg(FedAvg):
         for client in client_manager.all().values():
             prop = client.get_properties(ins, timeout=30, group_id="default")
             client_id = prop.properties["client_id"]
-            print(client_id)
-
             parameters_enc = encrypt_data_pubkey_client(parameters, client_id)
-            
             fit_ins_list.append((client, FitIns(parameters_enc, config)))
 
         return fit_ins_list
@@ -62,7 +59,6 @@ class CustomFedAvg(FedAvg):
         return super().aggregate_fit(server_round, decrypted_results, failures)
 
     def aggregate_evaluate(self, server_round, results, failures):
-        # TODO encryption - decryptio - like fit evaluate???
         aggregated_loss = super().aggregate_evaluate(server_round, results, failures)
         ins = GetPropertiesIns({})
         if server_round == self.custom_number_of_rounds:
@@ -91,14 +87,6 @@ def server_fn(context: Context):
         min_available_clients=2,
         initial_parameters=parameters,
     )
-    """
-    strategy = FedAvg(
-        fraction_fit=fraction_fit,
-        fraction_evaluate=1.0,
-        min_available_clients=2,
-        initial_parameters=parameters,
-    )
-    """
     
     config = ServerConfig(num_rounds=num_rounds)
     return ServerAppComponents(strategy=strategy, config=config)

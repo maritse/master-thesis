@@ -70,7 +70,6 @@ class FlowerClient(Client):
         self.valloader = valloader
         self.local_epochs = local_epochs
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        #self.net.to(self.device)
 
     def get_properties(self, config: Config) -> Dict[str, Scalar]:
         props: Dict[str, Scalar] = {
@@ -84,13 +83,10 @@ class FlowerClient(Client):
     def get_parameters(self, ins: GetParametersIns) -> GetParametersRes:
         print(f"[Client {self.partition_id}] get_parameters")
 
-        # Get parameters as a list of NumPy ndarray's
         ndarrays: List[np.ndarray] = get_parameters(self.net)
         
-        # Serialize ndarray's into a Parameters object
         parameters = ndarrays_to_parameters(ndarrays)
 
-        # Build and return response
         status = Status(code=Code.OK, message="Success")
         return GetParametersRes(
             status=status,
@@ -98,16 +94,8 @@ class FlowerClient(Client):
         )
 
     def fit(self, ins: FitIns) -> FitRes:
-        print(f"[Client {self.partition_id}] fit, config: {ins.config}")
-
-        # Deserialize parameters to NumPy ndarray's
-        #parameters_original = ins.parameters
-        # test crypto
-        print("Ins parameters type: " + str(type(ins.parameters)))
         ndarrays_original = decrypt_data_privkey_client(ins.parameters)
         #ndarrays_original = parameters_to_ndarrays(parameters_original)
-
-        #ndarrays_original = deserialize_and_decrypt(ins.parameters)
 
         # Update local model, train, get updated parameters
         set_parameters(self.net, ndarrays_original)
@@ -133,7 +121,6 @@ class FlowerClient(Client):
 
         # Deserialize parameters to NumPy ndarray's
         #parameters_original = ins.parameters
-        # decrypt test
         ndarrays_original = decrypt_data_privkey_client(ins.parameters)
         #ndarrays_original = parameters_to_ndarrays(parameters_original)
         set_parameters(self.net, ndarrays_original)

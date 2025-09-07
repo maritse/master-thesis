@@ -126,12 +126,12 @@ contract TrainOrch {
         require(!session.completed, "Session already completed");
         require(session.rewardPool > 0, "No funds for rewards");
 
-        uint256 rewardPerTrainer = session.rewardPool / session.trainers.length;
+        //uint256 rewardPerTrainer = session.rewardPool / session.trainers.length;
 
         // Assign rewards to trainers - TODO
-        for (uint i = 0; i < session.trainers.length; i++) {
-            balances[session.trainers[i]] += rewardPerTrainer;
-        }
+        //for (uint i = 0; i < session.trainers.length; i++) {
+        //    balances[session.trainers[i]] += rewardPerTrainer;
+        //}
 
         emit TrainingCompleted(currentSession, session.trainers, session.rewardPool);
 
